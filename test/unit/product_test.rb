@@ -63,4 +63,15 @@ class ProductTest < ActiveSupport::TestCase
 		assert_equal I18n.translate('activerecord.errors.messages.taken'),
 			product.errors[:title].join('; ')
 	end
+
+  test "title is minimum ten characters long" do
+    product = Product.new(:title => "short",
+      :description => "yyy",
+      :price => 1,
+      :image_url => "zzz.jpg")
+    
+    assert product.invalid?
+    assert_equal "is too short (minimum is 10 characters)",
+      product.errors[:title].join('; ')
+  end
 end
